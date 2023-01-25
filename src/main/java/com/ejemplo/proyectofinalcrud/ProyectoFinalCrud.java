@@ -11,8 +11,9 @@ public class ProyectoFinalCrud {
         
         System.out.println(personaService.listar());
         
+        personaService.eliminar(2);
         
-        
+        /*
         
         PersonaEntity personaEntity = new PersonaEntity();
         personaEntity.setDocumento("12121515");
@@ -23,7 +24,7 @@ public class ProyectoFinalCrud {
         personaEntity.setIdPersona(3);
         
         personaService.modificar(personaEntity);
-        
+        */
         
     }
 }

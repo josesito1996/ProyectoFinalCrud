@@ -72,4 +72,17 @@ public class PersonaDao extends ConexionBd implements PersonaService {
             return new PersonaEntity();
         }
     };
+
+    @Override
+    public void eliminar(Integer id) {
+        Connection connection = null;
+        try {
+            connection = getConection();
+            PreparedStatement pst = connection.prepareStatement("delete from persona where idPersona = ?");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error al modificar Persona en la BD : " + e.getMessage());
+        }
+    }
 }

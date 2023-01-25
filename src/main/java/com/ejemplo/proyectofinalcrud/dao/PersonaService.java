@@ -12,4 +12,6 @@ public interface PersonaService {
     PersonaEntity registrar(PersonaEntity personaEntity);
     
     PersonaEntity modificar(PersonaEntity personaEntity);
+    
+    void eliminar(Integer id);
 }
