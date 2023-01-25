@@ -82,7 +82,7 @@ public class PersonaDao extends ConexionBd implements PersonaService {
             pst.setInt(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al modificar Persona en la BD : " + e.getMessage());
+            System.err.println("Error al eliminar Persona en la BD : " + e.getMessage());
         }
     }
 }
