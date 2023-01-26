@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,23 +40,29 @@ public class PersonaDao extends ConexionBd implements PersonaService {
         Connection connection = null;
         try {
             connection = getConection();
-            PreparedStatement pst = connection.prepareStatement("INSERT INTO persona ( documento, primerNombre, segundoNombre, apellidoPaterno, apellidoMaterno ) VALUES (?,?,?,?,?)");
+            PreparedStatement pst = connection.prepareStatement("INSERT INTO persona ( documento, primerNombre, segundoNombre, apellidoPaterno, apellidoMaterno ) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, personaEntity.getDocumento());
             pst.setString(2, personaEntity.getPrimerNombre());
             pst.setString(3, personaEntity.getSegundoNombre());
             pst.setString(4, personaEntity.getApellidoPaterno());
             pst.setString(5, personaEntity.getApellidoMaterno());
-            int result = pst.executeUpdate();
-            System.out.println("El resultado es : " + result);
+            pst.executeUpdate();
+            Integer idGenerado = null;
+            ResultSet rs = pst.getGeneratedKeys();
+            while (rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+            personaEntity.setIdPersona(idGenerado);
+            return personaEntity;
         } catch (SQLException e) {
             System.err.println("Error al registra Persona en la BD : " + e.getMessage());
+            return new PersonaEntity();
         }
-        return new PersonaEntity();
     }
 
     @Override
     public PersonaEntity modificar(PersonaEntity personaEntity) {
-      Connection connection = null;
+        Connection connection = null;
         try {
             connection = getConection();
             PreparedStatement pst = connection.prepareStatement("UPDATE persona SET documento = ?, primerNombre = ?, segundoNombre = ?, apellidoPaterno = ?, apellidoMaterno = ? where idPersona = ?");
@@ -71,7 +78,9 @@ public class PersonaDao extends ConexionBd implements PersonaService {
             System.err.println("Error al modificar Persona en la BD : " + e.getMessage());
             return new PersonaEntity();
         }
-    };
+    }
+
+    ;
 
     @Override
     public void eliminar(Integer id) {
